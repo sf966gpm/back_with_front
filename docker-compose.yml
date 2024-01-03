@@ -5,3 +5,5 @@ services:
       context: ./services/app
     volumes:
       - ./services/app/src:/var/www/html
+    ports:
+      - "8181:8000"
