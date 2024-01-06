@@ -1,9 +1,31 @@
 version: '3'
+
+networks:
+  backend:
+    driver: bridge
+
 services:
-  app:
+  backend:
     build:
-      context: ./services/app
+      context: ./services/backend
     volumes:
-      - ./services/app/src:/var/www/html
+      - ./services/backend/src:/var/www/html
     ports:
       - "8181:8000"
+    networks:
+      - backend
+
+  database:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+      PGDATA: /data/postgres
+    volumes:
+      - ./services/database:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - backend
