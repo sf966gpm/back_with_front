@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 
 networks:
   backend:
@@ -12,6 +12,18 @@ services:
       - ./services/backend/src:/var/www/html
     ports:
       - "8181:8000"
+    networks:
+      - backend
+
+  frontend:
+    build:
+      context: ./services/frontend
+      dockerfile: Dockerfile
+#      target: production-stage
+    ports:
+      - "9921:5173"
+    volumes:
+      - ./services/frontend/src:/app
     networks:
       - backend
 
