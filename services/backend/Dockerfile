@@ -1,13 +1,5 @@
 FROM php:8.3-fpm-alpine
 
-#RUN apk --no-cache update \
-#        && apk add --no-cache autoconf g++ make \
-#        postgresql-dev \
-#        \
-#        && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-#        \
-#        && docker-php-ext-install pdo_pgsql
-
 RUN apk add libpq-dev \
     &&  docker-php-ext-install pdo pdo_pgsql pgsql
 
@@ -18,3 +10,4 @@ RUN addgroup -g 1000 maxim && adduser -u 1000 -G maxim -h /home/maxim -D maxim &
 
 USER maxim
 WORKDIR /var/www/html
+CMD php artisan serve --host=0.0.0.0
