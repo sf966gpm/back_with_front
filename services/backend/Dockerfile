@@ -1,7 +1,9 @@
 FROM php:8.3-fpm-alpine
 
-RUN apk add libpq-dev \
-    &&  docker-php-ext-install pdo pdo_pgsql pgsql
+RUN apk update \
+    && apk add libpq-dev \
+    &&  docker-php-ext-install pdo pdo_pgsql pgsql \
+    && rm -rf /var/cache/apk/*
 
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
