@@ -14,6 +14,7 @@ services:
       - "8181:8000"
     networks:
       - backend
+    restart: unless-stopped
 
   frontend:
     build:
@@ -26,16 +27,19 @@ services:
       - ./services/frontend/src:/app
     networks:
       - backend
+    restart: unless-stopped
 
   database:
-    image: postgres:16-alpine
+    build:
+      context: ./services/database
+      dockerfile: Dockerfile
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
       PGDATA: /data/postgres
     volumes:
-      - ./services/database:/data/postgres
+      - ./services/database/data:/data/postgres
     ports:
       - "5432:5432"
     restart: unless-stopped
